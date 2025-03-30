@@ -20,8 +20,25 @@ namespace XmlToExcel.ViewModels
             set => this.RaiseAndSetIfChanged(ref _IsFileEnter, value); 
         }
 
+        bool _ShowMainMessage = false;
+        public bool ShowMainMessage
+        {
+            get => _ShowMainMessage;
+            set => this.RaiseAndSetIfChanged(ref _ShowMainMessage, value);
+        }
+
+
+        string _MainMessage = "";
+        public string MainMessage
+        {
+            get => _MainMessage;
+            set => this.RaiseAndSetIfChanged(ref _MainMessage, value);
+        }
+
         public bool LoadNewFile(string? FilePath)
         {
+            if (string.IsNullOrEmpty(FilePath)) return false;
+
             try
             {
                 XDocument doc = XDocument.Load(FilePath);

@@ -18,9 +18,15 @@
     </Design.DataContext>
 
 	<Grid>
+		
+		<!--Drag n' Drop -->
 		<Panel Opacity=".6" Background="Black" ZIndex="1" IsVisible="{Binding IsFileEnter}"/>
 		<TextBlock Text="¡Suéltalo!" ZIndex="2" FontSize="30" IsVisible="{Binding IsFileEnter}" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 			
+		<!--Mensaje de informacion-->
+		<TextBlock Text="{Binding MainMessage}" IsVisible="{Binding ShowMainMessage}"/>
+		
+		<!--Contenido Principal-->
 		<ScrollViewer Margin="10">
 			<ItemsControl ItemsSource="{Binding NodeElements}">
 			<ItemsControl.ItemTemplate>
