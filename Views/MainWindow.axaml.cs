@@ -1,6 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.ReactiveUI;
+using MsBox.Avalonia.Enums;
+using MsBox.Avalonia;
 using System.Linq;
 using XmlToExcel.ViewModels;
 
@@ -17,12 +19,19 @@ namespace XmlToExcel.Views
             AddHandler(DragDrop.DragEnterEvent, EnterFile);
         }
 
-        void DropFile(object? sender, DragEventArgs e)
+        async void DropFile(object? sender, DragEventArgs e)
         {
             var db = e.Data.GetFiles()?.ToList()[0].Path.LocalPath;
 
             ViewModel!.IsFileEnter = false;
-            ViewModel!.LoadNewFile(db);
+
+            if (!ViewModel!.LoadNewFile(db))
+            {
+                var box = 
+                    MessageBoxManager.GetMessageBoxStandard("Error", "Ups! Al parecer el XML no es válido", ButtonEnum.Ok);
+
+                _ = await box.ShowAsync();
+            }
         }
 
         void EnterFile(object? sender, DragEventArgs e) 
