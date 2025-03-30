@@ -6,6 +6,8 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="XmlToExcel.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
+		WindowState="Maximized"
+		DragDrop.AllowDrop="True"
         Icon="/Assets/avalonia-logo.ico"
         Title="XmlToExcel">
 
@@ -15,5 +17,38 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
+	<Grid>
+		<Panel Opacity=".6" Background="Black" ZIndex="1" IsVisible="{Binding IsFileEnter}"/>
+		<TextBlock Text="¡Suéltalo!" ZIndex="2" FontSize="30" IsVisible="{Binding IsFileEnter}" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+			
+		<ScrollViewer Margin="10">
+			<ItemsControl ItemsSource="{Binding NodeElements}">
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<StackPanel>
+						<TextBlock Text="{Binding ElementName}" />
+		
+			<ListBox ItemsSource="{Binding Attributes}" >
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock>
+							<TextBlock.Text>
+								<MultiBinding StringFormat="{}{0} - {1}">
+									<Binding Path="Name.LocalName" />
+									<Binding Path="Value" />
+								</MultiBinding>
+							</TextBlock.Text>
+						</TextBlock>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+			    
+				
+					</StackPanel>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+		</ScrollViewer>
+	</Grid>
  
 </Window>
