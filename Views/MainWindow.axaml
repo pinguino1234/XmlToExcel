@@ -7,8 +7,11 @@
         x:Class="XmlToExcel.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
 		WindowState="Maximized"
+		ExtendClientAreaToDecorationsHint="True"
+		ExtendClientAreaChromeHints="-1"
 		DragDrop.AllowDrop="True"
-        Icon="/Assets/avalonia-logo.ico"
+		xmlns:ui="using:FluentAvalonia.UI.Controls"
+        Icon="/Assets/csv.png"
         Title="XmlToExcel">
 
     <Design.DataContext>
@@ -18,6 +21,10 @@
     </Design.DataContext>
 
 	<Grid>
+		<!--Cambio de tema-->
+		<Button VerticalAlignment="Top"  HorizontalAlignment="Right" Margin="5 5 150 0" Click="ToggleTheme">
+			<ui:SymbolIcon Symbol="DarkTheme" FontSize="15" />
+		</Button>
 		
 		<!--Drag n' Drop -->
 		<Panel Opacity=".6" Background="Black" ZIndex="1" IsVisible="{Binding IsFileEnter}"/>

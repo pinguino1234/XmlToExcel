@@ -8,14 +8,24 @@ using XmlToExcel.ViewModels;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using System.IO;
+using Avalonia.Styling;
 
 namespace XmlToExcel.Views
 {
     public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     {
+        //Custom FilePickerFileType 
+        FilePickerFileType ExcelFormat { get; } = new("Archivo Separado por Comas")
+        {
+            Patterns = ["*.csv"]
+        };
+
         public MainWindow()
         {
             InitializeComponent();
+
+            //Inicializamos el tema actual
+            RequestedThemeVariant = ThemeVariant.Light;
 
             //Registramos los eventos del D&D
             AddHandler(DragDrop.DropEvent, DropFile);
@@ -62,10 +72,15 @@ namespace XmlToExcel.Views
 
         }
 
-        //Custom FilePickerFileType 
-        FilePickerFileType ExcelFormat { get; } = new("Archivo Separado por Comas")
+        void ToggleTheme(object sender, RoutedEventArgs e)
         {
-            Patterns = new[] { "*.csv"}
-        };
+            if (RequestedThemeVariant == ThemeVariant.Light)
+            {
+                RequestedThemeVariant = ThemeVariant.Dark;
+                return;
+            }
+
+            RequestedThemeVariant = ThemeVariant.Light;
+        }
     }
 }
