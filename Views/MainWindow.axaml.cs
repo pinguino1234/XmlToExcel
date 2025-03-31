@@ -25,7 +25,7 @@ namespace XmlToExcel.Views
             InitializeComponent();
 
             //Inicializamos el tema actual
-            RequestedThemeVariant = ThemeVariant.Light;
+            RequestedThemeVariant = ThemeVariant.Dark;
 
             //Registramos los eventos del D&D
             AddHandler(DragDrop.DropEvent, DropFile);

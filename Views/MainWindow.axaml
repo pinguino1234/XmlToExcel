@@ -11,7 +11,7 @@
 		ExtendClientAreaChromeHints="-1"
 		DragDrop.AllowDrop="True"
 		xmlns:ui="using:FluentAvalonia.UI.Controls"
-        Icon="/Assets/csv.png"
+        Icon="/Assets/csv.ico"
         Title="XmlToExcel">
 
     <Design.DataContext>
