@@ -12,6 +12,7 @@
 		DragDrop.AllowDrop="True"
 		xmlns:ui="using:FluentAvalonia.UI.Controls"
         Icon="/Assets/csv.ico"
+		KeyUp="CancelDragDrop"
         Title="XmlToExcel">
 
     <Design.DataContext>
@@ -27,14 +28,13 @@
 		</Button>
 		
 		<!--Drag n' Drop -->
-		<Panel Opacity=".6" Background="Black" ZIndex="1" IsVisible="{Binding IsFileEnter}"/>
-		<TextBlock Text="¡Suéltalo!" ZIndex="2" FontSize="30" IsVisible="{Binding IsFileEnter}" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+		<Panel Opacity=".7" Background="{Binding PanelBackgorund}" ZIndex="1" IsVisible="{Binding IsFileEnter}"/>
 			
 		<!--Mensaje de informacion-->
-		<TextBlock Text="{Binding MainMessage}" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" FontSize="30" IsVisible="{Binding ShowMainMessage}"/>
+		<TextBlock Text="{Binding MainMessage}" Foreground="{Binding Foreground}" ZIndex="10" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" FontSize="30" IsVisible="{Binding ShowMainMessage}"/>
 		
 		<!--Contenido Principal-->
-		<Grid RowDefinitions="auto,*, auto" >
+		<Grid RowDefinitions="auto,*, auto" Margin="0 35 0 0">
 			
 			<!--Cabecera-->
 			<!--
@@ -62,7 +62,7 @@
 			</DataGrid>
 			
 			<!--Boton Exportar-->
-			<Button Click="ExportData" IsVisible="{Binding !ShowMainMessage}" Background="rgb(0, 113, 57)" Foreground="White" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10">
+			<Button Click="ExportData" IsVisible="{Binding !ShowMainMessage}" Background="rgb(0, 113, 57)" Foreground="White" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="15">
 				<StackPanel Orientation="Horizontal">
 					<Image Source="avares://XmlToExcel/Assets/csv.png" Width="30"/>
 					<TextBlock Text="Exportar a CSV" VerticalAlignment="Center" Margin="3 0 0 0"/>

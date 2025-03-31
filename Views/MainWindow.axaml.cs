@@ -7,8 +7,10 @@ using System.Linq;
 using XmlToExcel.ViewModels;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
-using System.IO;
 using Avalonia.Styling;
+using System.Threading.Tasks;
+using Velopack;
+using Avalonia.Media;
 
 namespace XmlToExcel.Views
 {
@@ -45,11 +47,19 @@ namespace XmlToExcel.Views
                     MessageBoxManager.GetMessageBoxStandard("Error", "Ups! Al parecer el XML no es válido", ButtonEnum.Ok);
 
                 _ = await box.ShowAsync();
+
+                ViewModel!.MainMessage = "Arrastra un XML para comenzar";
+                ViewModel!.ShowMainMessage = true;
             }
         }
 
-        void EnterFile(object? sender, DragEventArgs e) 
-            => ViewModel!.IsFileEnter = true;
+        void EnterFile(object? sender, DragEventArgs e)
+        {
+            ViewModel!.IsFileEnter = true;
+            ViewModel!.MainMessage = "¡Suéltalo!";
+            ViewModel!.ShowMainMessage = true;
+        }
+           
 
         async void ExportData(object sender, RoutedEventArgs e)
         {
@@ -72,15 +82,45 @@ namespace XmlToExcel.Views
 
         }
 
+        public void CancelDragDrop(object sender, KeyEventArgs e )
+        {
+            if (e.Key == Key.Escape)
+            {
+                ViewModel!.IsFileEnter = false;
+            }
+        }
+
         void ToggleTheme(object sender, RoutedEventArgs e)
         {
             if (RequestedThemeVariant == ThemeVariant.Light)
             {
+                ViewModel!.PanelBackgorund = Brushes.White;
+                ViewModel!.Foreground = Brushes.Black;
+
                 RequestedThemeVariant = ThemeVariant.Dark;
                 return;
             }
 
+            ViewModel!.PanelBackgorund = Brushes.Black;
+            ViewModel!.Foreground = Brushes.White;
+
             RequestedThemeVariant = ThemeVariant.Light;
+        }
+
+        private static async Task UpdateMyApp()
+        {
+            var mgr = new UpdateManager("https://github.com/pinguino1234/XmlToExcel/");
+
+            // check for new version
+            var newVersion = await mgr.CheckForUpdatesAsync();
+            if (newVersion == null)
+                return; // no update available
+
+            // download new version
+            await mgr.DownloadUpdatesAsync(newVersion);
+
+            // install new version and restart app
+            mgr.ApplyUpdatesAndRestart(newVersion);
         }
     }
 }

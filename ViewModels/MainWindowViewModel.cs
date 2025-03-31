@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Media;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,20 @@ namespace XmlToExcel.ViewModels
             set => this.RaiseAndSetIfChanged(ref _ShowMainMessage, value);
         }
 
+
+        IBrush _PanelBackground = Brushes.Black;
+        public IBrush PanelBackgorund 
+        { 
+            get => _PanelBackground;
+            set => this.RaiseAndSetIfChanged(ref _PanelBackground, value);
+        }
+
+        IBrush _Foreground = Brushes.White;
+        public IBrush Foreground
+        {
+            get => _Foreground;
+            set => this.RaiseAndSetIfChanged(ref _Foreground, value);
+        }
 
         string _MainMessage = "Arrastra un XML para comenzar";
         public string MainMessage
