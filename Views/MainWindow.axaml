@@ -24,37 +24,44 @@
 		<TextBlock Text="¡Suéltalo!" ZIndex="2" FontSize="30" IsVisible="{Binding IsFileEnter}" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 			
 		<!--Mensaje de informacion-->
-		<TextBlock Text="{Binding MainMessage}" IsVisible="{Binding ShowMainMessage}"/>
+		<TextBlock Text="{Binding MainMessage}" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" FontSize="30" IsVisible="{Binding ShowMainMessage}"/>
 		
 		<!--Contenido Principal-->
-		<ScrollViewer Margin="10">
-			<ItemsControl ItemsSource="{Binding NodeElements}">
-			<ItemsControl.ItemTemplate>
-				<DataTemplate>
-					<StackPanel>
-						<TextBlock Text="{Binding ElementName}" />
-		
-			<ListBox ItemsSource="{Binding Attributes}" >
+		<Grid RowDefinitions="auto,*, auto" >
+			
+			<!--Cabecera-->
+			<!--
+			<ListBox ItemsSource="{Binding NodeElements[0].Attributes}">
+				<ListBox.ItemsPanel>
+					<ItemsPanelTemplate>
+						<WrapPanel/>
+					</ItemsPanelTemplate>
+				</ListBox.ItemsPanel>
+				
 				<ListBox.ItemTemplate>
 					<DataTemplate>
-						<TextBlock>
-							<TextBlock.Text>
-								<MultiBinding StringFormat="{}{0} - {1}">
-									<Binding Path="Name.LocalName" />
-									<Binding Path="Value" />
-								</MultiBinding>
-							</TextBlock.Text>
-						</TextBlock>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="{Binding Name.LocalName, StringFormat={}{0}:}" FontWeight="Bold" FontSize="20" />
+							<TextBlock Text="{Binding Value}" Margin="5 0 0 0" FontSize="20"/>
+						</StackPanel>
 					</DataTemplate>
 				</ListBox.ItemTemplate>
 			</ListBox>
-			    
+			-->
+			
+			<!--MainDataGrid-->
+			<DataGrid Grid.Row="1" ItemsSource="{Binding Items}" AutoGenerateColumns="True" IsVisible="{Binding !ShowMainMessage}" >
 				
-					</StackPanel>
-				</DataTemplate>
-			</ItemsControl.ItemTemplate>
-		</ItemsControl>
-		</ScrollViewer>
+			</DataGrid>
+			
+			<!--Boton Exportar-->
+			<Button Click="ExportData" IsVisible="{Binding !ShowMainMessage}" Background="rgb(0, 113, 57)" Foreground="White" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10">
+				<StackPanel Orientation="Horizontal">
+					<Image Source="avares://XmlToExcel/Assets/csv.png" Width="30"/>
+					<TextBlock Text="Exportar a CSV" VerticalAlignment="Center" Margin="3 0 0 0"/>
+				</StackPanel>
+			</Button>
+		</Grid>
 	</Grid>
  
 </Window>

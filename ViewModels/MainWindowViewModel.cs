@@ -1,9 +1,12 @@
 ﻿using Avalonia.Controls;
 using ReactiveUI;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Windows.Input;
 using System.Xml.Linq;
 using XmlToExcel.Models;
 
@@ -12,6 +15,18 @@ namespace XmlToExcel.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         public ObservableCollection<NodeElement> NodeElements { get; set; } = [];
+        public ObservableCollection<Concepto> Items { get; set; } = [];
+
+        public ICommand ExportData { get; set; }
+
+        List<string> ExcludedAttributes = [
+            "cfdi",
+            "xsi",
+            "Certificado",
+            "NoCertificado",
+            "Sello",
+            "schemaLocation"
+        ];
 
         bool _IsFileEnter = false;
         public bool IsFileEnter 
@@ -20,7 +35,7 @@ namespace XmlToExcel.ViewModels
             set => this.RaiseAndSetIfChanged(ref _IsFileEnter, value); 
         }
 
-        bool _ShowMainMessage = false;
+        bool _ShowMainMessage = true;
         public bool ShowMainMessage
         {
             get => _ShowMainMessage;
@@ -28,7 +43,7 @@ namespace XmlToExcel.ViewModels
         }
 
 
-        string _MainMessage = "";
+        string _MainMessage = "Arrastra un XML para comenzar";
         public string MainMessage
         {
             get => _MainMessage;
@@ -39,18 +54,23 @@ namespace XmlToExcel.ViewModels
         {
             if (string.IsNullOrEmpty(FilePath)) return false;
 
+            Items.Clear();
+
             try
             {
                 XDocument doc = XDocument.Load(FilePath);
 
-                doc.Descendants().ToList().ForEach(x =>
+                //Obtenemos todos los elementos secundarios
+                doc.Descendants().Where(x => x.Name.LocalName != "Conceptos").ToList().ForEach(x =>
                 {
-                    var ne = new NodeElement();
-                    ne.ElementName = x.Name.LocalName;
-                    ne.Attributes = x.Attributes().ToList();
-
+                    var ne = CreateNodeElement(x);
                     NodeElements.Add(ne);
                 });
+
+                //Obtenemos todos los conceptps
+                doc.Descendants().Where(x => x.Name.LocalName == "Concepto").ToList().ForEach(x =>
+                    Items.Add(new Concepto(x.Attributes().ToArray()))
+                );
 
                 return true;
             }
@@ -59,6 +79,57 @@ namespace XmlToExcel.ViewModels
                 return false;
             }
              
+        }
+
+        NodeElement CreateNodeElement(XElement x)
+        {
+            var ne = new NodeElement();
+            ne.ElementName = x.Name.LocalName;
+
+            x.Attributes().ToList().ForEach(x =>
+            {
+                if (!ExcludedAttributes.Contains(x.Name.LocalName))
+                    ne.Attributes.Add(x);
+            });
+
+            return ne;
+        }
+
+        public MainWindowViewModel()
+        {
+            ExportData = ReactiveCommand.Create((string path) =>
+            {
+                var TextToWrite = "";
+                var no = Items.Where(x => x.SaveData).Count();
+
+                if (no > 0)
+                {
+                    //Obtenemos propiedades   
+                    var properties = Items[0].GetType().GetProperties().Where(x => x.Name != "SaveData").ToArray();
+
+                    //Escribir Nombre de propiedades
+                    foreach (var property in properties)
+                    {
+                        TextToWrite += $"{property.Name},";
+                    }
+
+                    TextToWrite += Environment.NewLine;
+
+                    //Escribir Valores
+                    foreach (var item in Items)
+                    {
+                        foreach (var property in properties) 
+                        {
+                            TextToWrite += $"{property.GetValue(item)},";
+                        }
+
+                        TextToWrite += Environment.NewLine;
+                    }
+
+                    File.WriteAllText(path, TextToWrite);
+                }
+
+            });
         }
     }
 }
