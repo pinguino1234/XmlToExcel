@@ -10,6 +10,7 @@
 		ExtendClientAreaToDecorationsHint="True"
 		ExtendClientAreaChromeHints="-1"
 		DragDrop.AllowDrop="True"
+		xmlns:views="using:XmlToExcel.Views"
 		xmlns:ui="using:FluentAvalonia.UI.Controls"
         Icon="/Assets/csv.ico"
 		KeyUp="CancelDragDrop"
@@ -22,6 +23,8 @@
     </Design.DataContext>
 
 	<Grid>
+		<views:LoadingView Name="MainLoadingView" IsVisible="False"/>
+		
 		<!--Cambio de tema-->
 		<Button VerticalAlignment="Top"  HorizontalAlignment="Right" Margin="5 5 150 0" Click="ToggleTheme">
 			<ui:SymbolIcon Symbol="DarkTheme" FontSize="15" />

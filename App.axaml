@@ -15,5 +15,7 @@
 		<sty:FluentAvaloniaTheme />
 		<StyleInclude
         Source="avares://Avalonia.Controls.TreeDataGrid/Themes/Fluent.axaml"/>
+
+		<StyleInclude Source="avares://FluentAvalonia.ProgressRing/Styling/Controls/ProgressRing.axaml" />
     </Application.Styles>
 </Application>

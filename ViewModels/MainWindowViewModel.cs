@@ -58,7 +58,7 @@ namespace XmlToExcel.ViewModels
             set => this.RaiseAndSetIfChanged(ref _Foreground, value);
         }
 
-        string _MainMessage = "Arrastra un XML para comenzar";
+        string _MainMessage = "Arrastra uno o varios XML para comenzar";
         public string MainMessage
         {
             get => _MainMessage;
@@ -68,8 +68,6 @@ namespace XmlToExcel.ViewModels
         public bool LoadNewFile(string? FilePath)
         {
             if (string.IsNullOrEmpty(FilePath)) return false;
-
-            Items.Clear();
 
             try
             {

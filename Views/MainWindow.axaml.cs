@@ -36,21 +36,45 @@ namespace XmlToExcel.Views
 
         async void DropFile(object? sender, DragEventArgs e)
         {
-            var db = e.Data.GetFiles()?.ToList()[0].Path.LocalPath;
+            ViewModel!.ShowMainMessage = false;
+
+            MainLoadingView.IsVisible = true;
+
+            var db = e.Data.GetFiles()?.ToList();
 
             ViewModel!.IsFileEnter = false;
             ViewModel!.ShowMainMessage = false;
+                
+            var archivosSinAbrir = 0;
+            var archivoCorrecto = false;
 
-            if (!ViewModel!.LoadNewFile(db))
+            foreach(var item in db)
             {
-                var box = 
-                    MessageBoxManager.GetMessageBoxStandard("Error", "Ups! Al parecer el XML no es válido", ButtonEnum.Ok);
+                if (!ViewModel!.LoadNewFile(item.Path.LocalPath))
+                {
+                    archivosSinAbrir++;
+                    return;
+                }
+
+                archivoCorrecto = true;
+            }
+
+            MainLoadingView.IsVisible = false; 
+                 
+            if (archivosSinAbrir > 0)
+            {
+                var box =
+                        MessageBoxManager.GetMessageBoxStandard("Error", $"Ups! Al parecer {archivosSinAbrir} no son válidos", ButtonEnum.Ok);
 
                 _ = await box.ShowAsync();
 
-                ViewModel!.MainMessage = "Arrastra un XML para comenzar";
-                ViewModel!.ShowMainMessage = true;
+                ViewModel!.MainMessage = "Arrastra uno o varios XML para comenzar";
+                
             }
+
+            if (!archivoCorrecto)
+                ViewModel!.ShowMainMessage = true;
+            
         }
 
         void EnterFile(object? sender, DragEventArgs e)
