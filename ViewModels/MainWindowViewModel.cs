@@ -43,6 +43,12 @@ namespace XmlToExcel.ViewModels
             set => this.RaiseAndSetIfChanged(ref _ShowMainMessage, value);
         }
 
+        bool _ShowMainDataGrid = false;
+        public bool ShowMainDataGrid
+        {
+            get => _ShowMainDataGrid;
+            set => this.RaiseAndSetIfChanged(ref _ShowMainDataGrid, value);
+        }
 
         IBrush _PanelBackground = Brushes.Black;
         public IBrush PanelBackgorund 

@@ -23,7 +23,7 @@
     </Design.DataContext>
 
 	<Grid>
-		<views:LoadingView Name="MainLoadingView" IsVisible="False"/>
+		<views:LoadingView Name="MainLoadingView" IsVisible="False" ZIndex="99"/>
 		
 		<!--Cambio de tema-->
 		<Button VerticalAlignment="Top"  HorizontalAlignment="Right" Margin="5 5 150 0" Click="ToggleTheme">
@@ -60,7 +60,7 @@
 			-->
 			
 			<!--MainDataGrid-->
-			<DataGrid Grid.Row="1" ItemsSource="{Binding Items}" AutoGenerateColumns="True" IsVisible="{Binding !ShowMainMessage}" >
+			<DataGrid Grid.Row="1" ItemsSource="{Binding Items}" AutoGenerateColumns="True" IsVisible="{Binding ShowMainDataGrid}" >
 				
 			</DataGrid>
 			

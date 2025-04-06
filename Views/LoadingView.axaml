@@ -6,10 +6,28 @@
              xmlns:ui="using:FluentAvalonia.UI.Controls"
 			 x:Class="XmlToExcel.Views.LoadingView">
 
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.ThemeDictionaries>
+				<ResourceDictionary x:Key='Light'>
+					<SolidColorBrush x:Key='BackgroundGridBrush'>Black</SolidColorBrush>
+					<SolidColorBrush x:Key='BackgroundBorderBrush'>White</SolidColorBrush>
+				</ResourceDictionary>
+				<ResourceDictionary x:Key='Dark'>
+					<SolidColorBrush x:Key='BackgroundGridBrush'>White</SolidColorBrush>
+					<SolidColorBrush x:Key='BackgroundBorderBrush'>Black</SolidColorBrush>
+				</ResourceDictionary>
+			</ResourceDictionary.ThemeDictionaries>
+		</ResourceDictionary>
+	</UserControl.Resources>
 
-	<Grid Opacity=".6" Background="White">
-		<Border Background="Black" CornerRadius="25" Padding="10" HorizontalAlignment="Center" VerticalAlignment="Center">
-			<ui:ProgressRing IsIndeterminate="True" BorderThickness="10" Width="100" Height="100" Foreground=""/>
+	<Grid >
+		<Panel Opacity=".6" Background="{DynamicResource BackgroundGridBrush}"/>
+		<Border Opacity="1" Background="{DynamicResource BackgroundBorderBrush}" ZIndex="99" CornerRadius="25" Padding="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+			<StackPanel>
+				<ui:ProgressRing IsIndeterminate="True" BorderThickness="10" Width="130" Height="130" Foreground="rgb(0, 113, 57)"/>
+				<TextBlock Text="Cargando..." HorizontalAlignment="Center" FontSize="18"/>
+			</StackPanel>
 		</Border>
 	</Grid>
 </UserControl>

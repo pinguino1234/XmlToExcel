@@ -11,6 +11,7 @@ using Avalonia.Styling;
 using System.Threading.Tasks;
 using Velopack;
 using Avalonia.Media;
+using System;
 
 namespace XmlToExcel.Views
 {
@@ -48,12 +49,12 @@ namespace XmlToExcel.Views
             var archivosSinAbrir = 0;
             var archivoCorrecto = false;
 
-            foreach(var item in db)
+            foreach (var item in db)
             {
-                if (!ViewModel!.LoadNewFile(item.Path.LocalPath))
+                if (!ViewModel!.LoadNewFile(item?.Path.LocalPath))
                 {
                     archivosSinAbrir++;
-                    return;
+                    continue;
                 }
 
                 archivoCorrecto = true;
@@ -73,7 +74,13 @@ namespace XmlToExcel.Views
             }
 
             if (!archivoCorrecto)
+            {
                 ViewModel!.ShowMainMessage = true;
+                return;
+            }
+
+            ViewModel!.ShowMainDataGrid = true;
+                
             
         }
 
